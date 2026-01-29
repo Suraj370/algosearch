@@ -26,9 +26,8 @@ algosearch/
 - [x] Package `__init__.py` files
 
 ### Phase 2: Data Scraping
-- [] LeetCode link scraper (`scrapers/lc_links.py`)
-- [] CodeForces link scraper (`scrapers/cf_links.py`)
-- [] Content extractor (`scrapers/extract_content.py`)
+- [x] LeetCode link scraper (`scrapers/lc_links.py`)
+- [x] CodeForces link scraper (`scrapers/cf_links.py`)
 
 ### Phase 3: Content Extraction
 - [ ] Crawl problem URLs, extract title + description
