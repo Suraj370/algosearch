@@ -115,5 +115,6 @@ python app/app.py
 ```
 
 ### Phase 6: Testing & Deployment
-- [ ] Test queries, verify both rankers
-- [ ] Deploy
+- [x] Test queries, verify both rankers
+- [x] Deploy
+**Live Link** https://algosearch-witb.onrender.com
