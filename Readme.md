@@ -71,23 +71,27 @@ Loads both `lc_index.json` (3,822 problems) and `cf_index.json` (10,967 problems
 python -m indexer.preprocess
 ```
 
-### Phase 4: TF-IDF Ranking
-- [ ] Implement corrected TF-IDF scorer
-- [ ] Fix multi-term scoring bug from original
+### Phase 4: Ranking Engines (`rankers/tfidf.py`, `rankers/bm25.py`)
+- [x] TF-IDF scorer — `TF = count / doc_length`, `IDF = log((1+N) / (1+df))`, sum across query terms
+- [x] BM25 scorer — `IDF * (tf * (k1+1)) / (tf + k1 * (1 - b + b * (dl/avgdl)))`, tunable `k1=1.5`, `b=0.75`
+- [x] Both share the same `rank(query_terms, top_k)` interface
 
-### Phase 5: BM25 Ranking
-- [ ] Implement BM25 scorer (same interface as TF-IDF)
-- [ ] Tunable k1/b parameters
+Both rankers load the precomputed index at init and return ranked results with score, title, URL, and source.
 
-### Phase 6: Comparison Mode
-- [ ] Side-by-side results for same query
-- [ ] Rank change highlighting
+**Key difference:** For query "binary tree", TF-IDF ranks short CodeForces problems with just "Tree" at #4-6 (inflated TF from short doc length). BM25 correctly surfaces "Binary Search Tree" problems instead due to term frequency saturation and relative length normalization.
 
-### Phase 7: Flask API & Frontend
+**Usage:**
+```bash
+python -m rankers.tfidf
+python -m rankers.bm25
+```
+
+### Phase 5: Flask API, Frontend & Comparison Mode
 - [ ] Search form with algorithm toggle (TF-IDF / BM25 / Compare)
 - [ ] JSON API
 - [ ] Results UI with problem titles and scores
+- [ ] Side-by-side comparison view with rank change highlighting
 
-### Phase 8: Testing & Deployment
+### Phase 6: Testing & Deployment
 - [ ] Test queries, verify both rankers
 - [ ] Deploy
