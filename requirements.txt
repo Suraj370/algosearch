@@ -1,0 +1,4 @@
+flask==3.1.0
+flask-wtf==1.2.2
+selenium==4.27.1
+webdriver-manager==4.0.2
