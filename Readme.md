@@ -86,11 +86,33 @@ python -m rankers.tfidf
 python -m rankers.bm25
 ```
 
-### Phase 5: Flask API, Frontend & Comparison Mode
-- [ ] Search form with algorithm toggle (TF-IDF / BM25 / Compare)
-- [ ] JSON API
-- [ ] Results UI with problem titles and scores
-- [ ] Side-by-side comparison view with rank change highlighting
+### Phase 5: Flask API, Frontend & Comparison Mode (`app/app.py`)
+- [x] Search form with algorithm toggle (TF-IDF / BM25 / Compare)
+- [x] JSON API
+- [x] Results UI with problem titles and scores
+- [x] Side-by-side comparison view with rank change highlighting
+
+Flask web app with two routes:
+
+| Route | Method | Description |
+|-------|--------|-------------|
+| `/` | GET/POST | Search form with algorithm dropdown (TF-IDF, BM25, Compare) |
+| `/api/search?q=...&method=tfidf\|bm25\|compare` | GET | JSON API for programmatic access |
+
+**Compare mode** runs both rankers on the same query and displays results in a two-column layout. Each BM25 result shows its TF-IDF rank when different, highlighting where the algorithms disagree.
+
+**Files:**
+| File | Purpose |
+|------|---------|
+| `app/app.py` | Flask routes, form handling, ranker integration |
+| `app/templates/index.html` | Search UI with single/compare result views |
+| `app/static/style.css` | Dark theme, responsive layout, source badges |
+
+**Usage:**
+```bash
+python app/app.py
+# Open http://127.0.0.1:5000
+```
 
 ### Phase 6: Testing & Deployment
 - [ ] Test queries, verify both rankers
