@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AlgoSearch</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>AlgoSearch</h1>
+    <p class="subtitle">Search 14,789 programming problems from LeetCode & CodeForces</p>
+
+    <form method="POST" class="search-form">
+      {{ form.hidden_tag() }}
+      <div class="search-row">
+        {{ form.search(placeholder="e.g. binary tree, dynamic programming, graph...") }}
+        {{ form.method() }}
+        {{ form.submit() }}
+      </div>
+    </form>
+
+    {% if results %}
+      {% if method == "compare" %}
+        <div class="compare-grid">
+          <div class="result-column">
+            <h2>TF-IDF</h2>
+            {% for r in results.tfidf %}
+              <div class="result-card">
+                <span class="rank">#{{ loop.index }}</span>
+                <div class="result-info">
+                  <a href="{{ r.url }}" target="_blank">{{ r.title }}</a>
+                  <span class="meta">
+                    <span class="source {{ r.source }}">{{ r.source }}</span>
+                    <span class="score">{{ r.score }}</span>
+                  </span>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+          <div class="result-column">
+            <h2>BM25</h2>
+            {% for r in results.bm25 %}
+              {% set tfidf_rank = namespace(val='-') %}
+              {% for t in results.tfidf %}
+                {% if t.doc_id == r.doc_id %}
+                  {% set tfidf_rank.val = loop.index %}
+                {% endif %}
+              {% endfor %}
+              <div class="result-card">
+                <span class="rank">#{{ loop.index }}</span>
+                <div class="result-info">
+                  <a href="{{ r.url }}" target="_blank">{{ r.title }}</a>
+                  <span class="meta">
+                    <span class="source {{ r.source }}">{{ r.source }}</span>
+                    <span class="score">{{ r.score }}</span>
+                    {% if tfidf_rank.val != loop.index %}
+                      <span class="rank-change">TF-IDF: #{{ tfidf_rank.val }}</span>
+                    {% endif %}
+                  </span>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% else %}
+        <div class="results-single">
+          <h2>{{ "TF-IDF" if method == "tfidf" else "BM25" }} Results</h2>
+          {% set result_list = results.tfidf if method == "tfidf" else results.bm25 %}
+          {% for r in result_list %}
+            <div class="result-card">
+              <span class="rank">#{{ loop.index }}</span>
+              <div class="result-info">
+                <a href="{{ r.url }}" target="_blank">{{ r.title }}</a>
+                <span class="meta">
+                  <span class="source {{ r.source }}">{{ r.source }}</span>
+                  <span class="score">{{ r.score }}</span>
+                </span>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% if results and (results.get('tfidf', [])|length == 0 and results.get('bm25', [])|length == 0) %}
+        <p class="no-results">No matching problems found.</p>
+      {% endif %}
+    {% endif %}
+  </div>
+</body>
+</html>
