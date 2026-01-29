@@ -20,12 +20,12 @@ algosearch/
 ### Phase 1: Project Setup
 - [x] Init git repo
 - [x] Folder structure (`scrapers/`, `indexer/`, `rankers/`, `app/`, `data/`)
-- [x] `requirements.txt` (flask, flask-wtf, selenium, webdriver-manager)
+- [x] `requirements.txt` (flask, flask-wtf, requests, gunicorn)
 - [x] `.gitignore`
 - [x] Package `__init__.py` files
 - [x] Virtual environment (`venv/`)
 
-**Tech stack:** Python 3, Flask, Selenium, webdriver-manager
+**Tech stack:** Python 3, Flask, Requests, Gunicorn
 
 ### Phase 2: Data Scraping
 - [x] LeetCode link scraper (`scrapers/lc_links.py`) — GraphQL API, 3,822 problems
